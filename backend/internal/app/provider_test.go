@@ -756,6 +756,38 @@ func TestTextThinkingOptionsAndReasoningParsing(t *testing.T) {
 	}
 }
 
+func TestTextThinkingEffortIsForwardedToChatCompletion(t *testing.T) {
+	for _, effort := range []string{"low", "medium", "high", "xhigh", "max"} {
+		t.Run(effort, func(t *testing.T) {
+			input := canvasGenerationInput{TextOptions: canvasTextOptions{Thinking: true, ThinkingEffort: effort}}
+			chatBody := map[string]interface{}{}
+			applyTextThinking(chatBody, input, "chat-completion")
+			if chatBody["reasoning_effort"] != effort {
+				t.Fatalf("reasoning_effort = %#v, want %q", chatBody["reasoning_effort"], effort)
+			}
+
+			responsesBody := map[string]interface{}{}
+			applyTextThinking(responsesBody, input, "responses")
+			reasoning, ok := responsesBody["reasoning"].(map[string]interface{})
+			if !ok || reasoning["effort"] != effort || reasoning["summary"] != "auto" {
+				t.Fatalf("reasoning = %#v, want effort %q and summary auto", responsesBody["reasoning"], effort)
+			}
+		})
+	}
+	input := canvasGenerationInput{TextOptions: canvasTextOptions{Thinking: true, ThinkingEffort: "unsupported"}}
+	chatBody := map[string]interface{}{}
+	applyTextThinking(chatBody, input, "chat-completion")
+	if chatBody["reasoning_effort"] != "medium" {
+		t.Fatalf("invalid Chat Completions reasoning_effort fallback = %#v", chatBody["reasoning_effort"])
+	}
+	responsesBody := map[string]interface{}{}
+	applyTextThinking(responsesBody, input, "responses")
+	reasoning, ok := responsesBody["reasoning"].(map[string]interface{})
+	if !ok || reasoning["effort"] != "medium" {
+		t.Fatalf("invalid Responses reasoning effort fallback = %#v", responsesBody["reasoning"])
+	}
+}
+
 func TestStreamingAgentParserReassemblesChatToolCallsAcrossChunks(t *testing.T) {
 	var deltas strings.Builder
 	parser := newStreamingAgentParser("chat-completion", func(delta string) {
