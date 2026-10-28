@@ -3,7 +3,7 @@ import { ImageParameterFields } from "@/components/image-parameter-fields";
 import { imageResolutionUsesQuality, imageSizePresets } from "@/lib/image-size-presets";
 import { createPortal } from "react-dom";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
-import { Button, Popover } from "antd";
+import { Button, Popover, Select } from "antd";
 import { useWorkspaceTopBarMount } from "@/components/layout/workspace-top-bar-extension";
 import { Tooltip } from "@/components/ui/base/tooltip";
 import { Reorder, LayoutGroup, motion, useReducedMotion } from "motion/react";
@@ -32,6 +32,7 @@ import type { PromptOptimizerProvider } from "@/lib/plugins/plugin-types";
 import { type CreationReference } from "./creation-references";
 import { creationAttachmentKind, type CreationAttachment, type CreationMode } from "./creation-assets";
 import { countOptions, modeLabels, qualityOptions, resolutionOptions, type CreationShotRailEntry } from "./creation-types";
+import type { TextThinkingEffort } from "@/services/api/generation-task";
 import "./creation-product.css";
 import "./creation-scrollbars.css";
 import { CreationAttachmentThumbnail, CreationMediaPreviewModal } from "./creation-workspace-messages";
@@ -126,6 +127,8 @@ type ComposerProps = {
     setTextStreaming: (value: boolean) => void;
     textThinking: boolean;
     setTextThinking: (value: boolean) => void;
+    textThinkingEffort: TextThinkingEffort;
+    setTextThinkingEffort: (value: TextThinkingEffort) => void;
     promptOptimizerProvider: PromptOptimizerProvider | null;
     composerFocusRef: RefObject<HTMLTextAreaElement | null>;
     onPromptFocus: () => void;
@@ -411,6 +414,21 @@ export function CreationComposer(props: ComposerProps) {
                             {props.textThinking ? <span className="size-1.5 rounded-full bg-blue-400 shrink-0 shadow-sm" /> : null}
                         </button>
                     </Tooltip>
+                    {props.textThinking ? <Select
+                        size="small"
+                        aria-label="思考档位"
+                        value={props.textThinkingEffort}
+                        disabled={interactionBusy}
+                        onChange={props.setTextThinkingEffort}
+                        options={[
+                            { value: "low", label: "低" },
+                            { value: "medium", label: "中" },
+                            { value: "high", label: "高" },
+                            { value: "xhigh", label: "更高" },
+                            { value: "max", label: "最高" },
+                        ]}
+                        style={{ width: 78 }}
+                    /> : null}
                 </> : null}
                 {props.prompt.trim() || props.attachments.length || props.references.some((reference) => reference.active) ? <Tooltip title="清空提示词和参考内容"><button type="button" className="creation-chat-control is-clear" onClick={props.onClearComposer} disabled={interactionBusy} aria-label="清空提示词和参考内容"><Trash2 /><span>清空</span></button></Tooltip> : null}
             </div>

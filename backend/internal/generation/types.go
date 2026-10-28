@@ -29,8 +29,9 @@ type Input struct {
 }
 
 type TextOptions struct {
-	Stream   *bool `json:"stream"`
-	Thinking bool  `json:"thinking"`
+	Stream         *bool  `json:"stream"`
+	Thinking       bool   `json:"thinking"`
+	ThinkingEffort string `json:"thinkingEffort"`
 }
 
 type AgentToolRequests struct {

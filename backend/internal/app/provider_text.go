@@ -159,11 +159,17 @@ func applyTextThinking(body map[string]interface{}, input canvasGenerationInput,
 	if !input.TextOptions.Thinking {
 		return
 	}
+	effort := input.TextOptions.ThinkingEffort
+	switch effort {
+	case "low", "medium", "high", "xhigh", "max":
+	default:
+		effort = "medium"
+	}
 	switch protocol {
 	case "responses":
-		body["reasoning"] = map[string]interface{}{"effort": "medium", "summary": "auto"}
+		body["reasoning"] = map[string]interface{}{"effort": effort, "summary": "auto"}
 	case "chat-completion":
-		body["reasoning_effort"] = "medium"
+		body["reasoning_effort"] = effort
 	case "claude-api":
 		body["thinking"] = map[string]interface{}{"type": "enabled", "budget_tokens": 1024}
 	}

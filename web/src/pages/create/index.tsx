@@ -14,7 +14,7 @@ import { continueCreationConversationOnCanvas } from "@/services/creation-canvas
 import { useExternalAssetSources } from "@/hooks/use-external-asset-sources";
 import { modelCapabilityConfigFor, normalizeImageValue, normalizeVideoValue, videoDurationAllowed, videoDurationOptions } from "@/lib/model-capabilities";
 import { inferVideoOperation, modelGroupReferenceLimits, resolveCompatibleModel, mergedImageCapabilityConfig, type ModelRequirements } from "@/lib/model-selection";
-import type { BackendGenerationResult } from "@/services/api/generation-task";
+import type { BackendGenerationResult, TextThinkingEffort } from "@/services/api/generation-task";
 import type { Skill } from "@/services/api/skills";
 import type { GenerationTask } from "@/services/api/task-center";
 import { loadCreationConversations, pendingCreationTaskIds, removeCreationConversationSnapshot, saveCreationConversations, updateCreationConversationSnapshot } from "@/services/creation-conversation-store";
@@ -50,6 +50,7 @@ type CreationRuntime = Awaited<ReturnType<typeof loadCreationRuntime>>;
 
 const TEXT_STREAMING_PREF_KEY = "creation.composer.text-streaming";
 const TEXT_THINKING_PREF_KEY = "creation.composer.text-thinking";
+const TEXT_THINKING_EFFORT_PREF_KEY = "creation.composer.text-thinking-effort";
 
 function readComposerPref(key: string, fallback: boolean): boolean {
     try {
@@ -64,6 +65,21 @@ function writeComposerPref(key: string, value: boolean) {
         window.localStorage.setItem(key, value ? "1" : "0");
     } catch {
         // 存储不可用（隐私模式/禁用）：仅当前会话生效，忽略
+    }
+}
+function readTextThinkingEffort(): TextThinkingEffort {
+    try {
+        const value = window.localStorage.getItem(TEXT_THINKING_EFFORT_PREF_KEY);
+        return value === "low" || value === "high" || value === "xhigh" || value === "max" ? value : "medium";
+    } catch {
+        return "medium";
+    }
+}
+function writeTextThinkingEffort(value: TextThinkingEffort) {
+    try {
+        window.localStorage.setItem(TEXT_THINKING_EFFORT_PREF_KEY, value);
+    } catch {
+        // 存储不可用时仅当前会话生效。
     }
 }
 
@@ -115,6 +131,7 @@ export default function CreatePage() {
     const [count, setCount] = useState(String(Math.max(1, Math.min(4, Number(config.count) || 1))));
     const [textStreaming, setTextStreaming] = useState(() => readComposerPref(TEXT_STREAMING_PREF_KEY, true));
     const [textThinking, setTextThinking] = useState(() => readComposerPref(TEXT_THINKING_PREF_KEY, false));
+    const [textThinkingEffort, setTextThinkingEffort] = useState<TextThinkingEffort>(readTextThinkingEffort);
     const [busy, setBusy] = useState(false);
     const [referenceReplacementBusy, setReferenceReplacementBusy] = useState(false);
     const [historyOpen, setHistoryOpen] = useState(false);
@@ -203,7 +220,8 @@ export default function CreatePage() {
     useEffect(() => {
         writeComposerPref(TEXT_STREAMING_PREF_KEY, textStreaming);
         writeComposerPref(TEXT_THINKING_PREF_KEY, textThinking);
-    }, [textStreaming, textThinking]);
+        writeTextThinkingEffort(textThinkingEffort);
+    }, [textStreaming, textThinking, textThinkingEffort]);
     useEffect(() => {
         if (!composerPreferencesHydrated || composerPreferencesInitialized) return;
         const saved = useCreationPreferencesStore.getState().preferences;
@@ -718,6 +736,7 @@ export default function CreatePage() {
                     onTaskUpdate: bindTask,
                     streamText: textStreaming,
                     enableThinking: textThinking,
+                    thinkingEffort: textThinkingEffort,
                     onTextDelta: textStreaming ? (value) => updateOriginAssistant((item) => ({ ...item, content: value })) : undefined,
                     ...retryContext,
                 }));
@@ -1049,6 +1068,8 @@ export default function CreatePage() {
         setTextStreaming,
         textThinking,
         setTextThinking,
+        textThinkingEffort,
+        setTextThinkingEffort,
         promptOptimizerProvider,
         composerFocusRef,
         onPromptFocus: loadAddedSkills,
