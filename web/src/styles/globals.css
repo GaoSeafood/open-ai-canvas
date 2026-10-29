@@ -435,8 +435,12 @@
 @media (max-width: 1023px) {
     .auth-scene-mascot { top: auto; bottom: 0; left: auto; right: 2%; width: 42%; height: 74%; }
     .auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-title { max-width: 60%; }
+    .auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-description { max-width: 56%; }
 }
-@media (max-width: 480px) { .auth-scene-mascot { width: 38%; height: 58%; } }
+@media (max-width: 480px) {
+    .auth-scene-mascot { width: 38%; height: 58%; }
+    .auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-description { display: none; }
+}
 
 .auth-scene-video-blend {
     background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--auth-panel-bg) 68%, transparent) 58%, var(--auth-panel-bg) 100%);
