@@ -41,14 +41,15 @@ const (
 )
 
 const (
-	defaultAppearanceBrandName = "影策"
-	defaultAppearanceBrandSlug = "open-ai-canvas"
-	defaultAppearanceSkinID    = "classic"
-	defaultAppearanceLogoURL   = "/logo.svg"
-	defaultAppearanceVideoURL  = "https://boss-shjd.biliapi.net/updream/aniforge/video/video_bbcb00bd-650d-4249-9346-5cd21fd2484c_m1hc-u0-1pu13x-3v1s.mp4"
-	defaultAppearancePosterURL = "https://i0.hdslb.com/bfs/aitool/aniforge/image/02933f26-5f1b-49ff-a811-b7f95ee5e5b8_m1hc-u0-sau.jpg"
-	defaultAppearanceHeroTitle = "让一个故事，\n从文字走向银幕。"
-	defaultRedeemPurchaseURL   = "" // 默认不配置购买链接，前端为空时不展示入口
+	defaultAppearanceBrandName       = "米格"
+	defaultAppearanceBrandSlug       = "mige"
+	defaultAppearanceSkinID          = "mige-studio"
+	defaultAppearanceLogoURL         = "/logo.svg"
+	defaultAppearanceVideoURL        = ""
+	defaultAppearancePosterURL       = ""
+	defaultAppearanceHeroTitle       = "让脑洞，\n开拍。"
+	defaultAppearanceHeroDescription = "从一个画面、一个角色或一句话开始，让灵感走向银幕。"
+	defaultRedeemPurchaseURL         = "" // 默认不配置购买链接，前端为空时不展示入口
 )
 
 type AppearanceSetting struct {
@@ -125,7 +126,7 @@ func defaultAppearanceSetting() AppearanceSetting {
 		BrandSlug:         defaultAppearanceBrandSlug,
 		AuthHeroTitle:     defaultAppearanceHeroTitle,
 		AuthVideoAutoplay: true,
-		LogoFrameEnabled:  true,
+		LogoFrameEnabled:  false,
 		SkinID:            defaultAppearanceSkinID,
 		SkinThemes:        defaultAppearanceSkinThemes(),
 		RedeemPurchaseURL: defaultRedeemPurchaseURL,
@@ -297,7 +298,7 @@ func (s *Service) ResetAppearance(actor *model.User) (*AdminAppearanceSetting, e
 		return nil, err
 	}
 	after := defaultAppearanceSetting()
-	if err := s.appendAdminAudit(actor, "appearance.reset", "system_setting", appearanceSettingKey, "恢复影策默认品牌标识", map[string]any{"before": before, "after": after}); err != nil {
+	if err := s.appendAdminAudit(actor, "appearance.reset", "system_setting", appearanceSettingKey, "恢复米格默认品牌标识", map[string]any{"before": before, "after": after}); err != nil {
 		return nil, err
 	}
 	return s.AdminAppearance(actor)
@@ -750,6 +751,13 @@ func publicAppearanceSetting(setting *model.SystemSetting, value AppearanceSetti
 	}
 	if setting != nil {
 		result.UpdatedAt = setting.UpdatedAt
+	}
+	if setting == nil {
+		result.AuthHeroDescription = defaultAppearanceHeroDescription
+		result.SEOTitle = "米格 MIGE · AI 影像创作工作台"
+		result.SEODescription = "米格，让脑洞，开拍。用画布组织故事、角色与分镜，完成图片、视频、音频与文本创作。"
+		result.SEOKeywords = "米格,MIGE,AI影像,短剧创作,分镜,自由画布"
+		result.FooterCopyright = fmt.Sprintf("© %d 米格 MIGE", time.Now().Year())
 	}
 	if value.LogoResourceID != "" || value.DarkLogoResourceID != "" {
 		result.LogoConfigured = true

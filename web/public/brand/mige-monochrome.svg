@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <title>米格单色标识</title>
+  <path fill="currentColor" fill-rule="evenodd" d="M22 39C26 25 38 18 49 18L44 9C55 8 66 13 72 19L81 9C85 12 84 18 82 22C101 24 111 38 114 57L119 64L113 67L116 82L110 84C110 102 94 119 66 121C38 122 19 108 17 91L11 94L15 74L10 76L15 56L11 57L22 39ZM64 49C54 31 35 37 29 52C23 65 27 77 35 81C25 86 26 100 37 107C50 116 78 116 92 107C105 99 105 87 96 81C107 71 104 51 93 44C82 36 71 40 64 49Z"/>
+  <rect x="44" y="49" width="12" height="28" rx="6" transform="rotate(16 44 49)" fill="currentColor"/>
+  <rect x="79" y="52" width="12" height="28" rx="6" transform="rotate(16 79 52)" fill="currentColor"/>
+  <path d="M39 91C51 99 71 103 88 98" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+</svg>

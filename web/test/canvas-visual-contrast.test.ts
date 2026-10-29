@@ -10,8 +10,8 @@ describe("canvas visual contrast", () => {
         }
     });
 
-    test("changes only the canvas substrate while retaining original surfaces", () => {
-        expect(canvasThemes.light.canvas.background).toBe("#f0f0f0");
+    test("uses rice-paper and neutral charcoal substrates with distinct surfaces", () => {
+        expect(canvasThemes.light.canvas.background).toBe("#f8f4eb");
         expect(canvasThemes.light.node.fill).toBe("#ffffff");
         expect(canvasThemes.light.node.edge).toBe("rgba(15,23,42,.16)");
         expect(canvasThemes.light.node.shadow).toBe("0 6px 18px rgba(15,23,42,.08)");
@@ -19,12 +19,12 @@ describe("canvas visual contrast", () => {
         expect(canvasThemes.light.toolbar.panel).toBe("rgba(255,255,255,.94)");
         expect(canvasThemes.light.spatial.elevated).toBe("rgba(255,255,255,.94)");
 
-        expect(canvasThemes.dark.canvas.background).toBe("#000000");
-        expect(canvasThemes.dark.node.fill).toBe("#181818");
+        expect(canvasThemes.dark.canvas.background).toBe("#1e201f");
+        expect(canvasThemes.dark.node.fill).toBe("#252725");
         expect(canvasThemes.dark.node.edge).toBe("rgba(255,255,255,.18)");
         expect(canvasThemes.dark.node.shadow).toBe("0 8px 24px rgba(0,0,0,.34)");
         expect(canvasThemes.dark.node.hoverShadow).toBe("0 12px 30px rgba(0,0,0,.46)");
-        expect(canvasThemes.dark.toolbar.panel).toBe("rgba(20,20,20,.97)");
+        expect(canvasThemes.dark.toolbar.panel).toBe("rgba(37,39,37,.97)");
         expect(canvasThemes.dark.toolbar.border).toBe("rgba(255,255,255,.1)");
         expect(canvasThemes.dark.spatial.elevated).toBe("rgba(15,15,15,.97)");
     });

@@ -421,6 +421,39 @@ export const DEFAULT_CLASSIC_SKIN: SkinDefinition = {
     },
 };
 
+export const DEFAULT_MIGE_SKIN: SkinDefinition = {
+    id: "mige-studio",
+    name: "米格片场",
+    description: "赤陶橙与米白 · 中性炭黑画布",
+    locked: false,
+    tokens: {
+        light: {
+            ...DEFAULT_CLASSIC_SKIN.tokens.light,
+            canvas: "#f8f4eb", surface: "#fffdfa", surfaceSubtle: "#f2ede3", surfaceRaised: "#e9e1d5", overlay: "#fffdfa",
+            text: "#252522", textMuted: "#706b62", border: "#ddd7cd", control: "#fffdfa", controlHover: "#f0e9dd", controlActive: "#e7ddce",
+            controlBorder: "#c8beb0", controlFocus: "#a94727", controlDisabledBackground: "#eee9df", controlDisabledForeground: "#8b8275",
+            primary: "#a94727", primaryHover: "#923b20", primaryActive: "#79311b", primaryForeground: "#ffffff",
+            selected: "#f5e1d6", selectedHover: "#eed3c4", selectedActive: "#e6c2af", selectedForeground: "#8b3b22",
+            icon: "#514c44", iconMuted: "#82796d", iconActive: "#a94727",
+            workspace: "#fffdfa", workspaceGrid: "#e8e2d8", adminBackground: "#f8f4eb", adminSurface: "#fffdfa", adminSubtle: "#f2ede3", adminStrong: "#e9e1d5",
+            authBackground: "#f8f4eb", authPanel: "#f2ede3", authCard: "#fffdfa", authAccent: "#a94727", authMuted: "#706b62",
+        },
+        dark: {
+            ...DEFAULT_CLASSIC_SKIN.tokens.dark,
+            canvas: "#1e201f", surface: "#252725", surfaceSubtle: "#2c2e2b", surfaceRaised: "#363832", overlay: "#2a2c29",
+            text: "#f8f4eb", textMuted: "#b7b3a9", border: "#41433e", control: "#2c2e2b", controlHover: "#363832", controlActive: "#41433c",
+            controlBorder: "#5e6056", controlFocus: "#e9a385", controlDisabledBackground: "#30322e", controlDisabledForeground: "#8b8c81",
+            primary: "#e9a385", primaryHover: "#f3b89e", primaryActive: "#d98d6e", primaryForeground: "#302016",
+            selected: "#44352e", selectedHover: "#534036", selectedActive: "#634a3b", selectedForeground: "#f4c4ad",
+            icon: "#ded9ce", iconMuted: "#a4a295", iconActive: "#e9a385",
+            workspace: "#252725", workspaceGrid: "#343631", adminBackground: "#1e201f", adminSurface: "#252725", adminSubtle: "#2c2e2b", adminStrong: "#363832",
+            authBackground: "#1e201f", authPanel: "#252725", authCard: "#2c2e2b", authAccent: "#e9a385", authMuted: "#b7b3a9",
+        },
+        components: { ...DEFAULT_CLASSIC_SKIN.tokens.components, buttonRadius: 10, inputRadius: 10, cardRadius: 16, overlayRadius: 16, menuRadius: 10, controlHeight: 40, controlHeightLarge: 46 },
+        buttons: { light: { ...DEFAULT_BUTTON_GRADIENT, mode: "solid" }, dark: { ...DEFAULT_BUTTON_GRADIENT, mode: "solid" } },
+    },
+};
+
 const HEX_COLOR = /^#[0-9a-f]{6}(?:[0-9a-f]{2})?$/i;
 const MANAGED_VARIABLES = [
     "--button-primary-bg", "--button-primary-hover-bg", "--button-primary-active-bg", "--button-primary-fg",

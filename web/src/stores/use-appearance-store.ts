@@ -3,28 +3,29 @@ import { DEFAULT_CANVAS_APPEARANCE } from "@/lib/canvas/agent-appearance";
 import { DEFAULT_UPDATE_ANNOUNCEMENT, normalizeUpdateAnnouncement } from "@/lib/update-announcement";
 
 import type { PublicAppearance } from "@/services/api/appearance";
-import { applySkinTheme, DEFAULT_CLASSIC_SKIN, normalizeSkinDefinition } from "@/lib/skin-themes";
+import { applySkinTheme, DEFAULT_MIGE_SKIN, normalizeSkinDefinition } from "@/lib/skin-themes";
+import { MIGE_BRAND, isMigeBrand } from "@/lib/brand";
 
 export const DEFAULT_PUBLIC_APPEARANCE: PublicAppearance = {
     updates: DEFAULT_UPDATE_ANNOUNCEMENT,
     canvas: DEFAULT_CANVAS_APPEARANCE,
     schemaVersion: 10,
-    brandName: "影策",
-    brandSlug: "open-ai-canvas",
-    authHeroTitle: "让一个故事，\n从文字走向银幕。",
-    authHeroDescription: "",
+    brandName: MIGE_BRAND.name,
+    brandSlug: MIGE_BRAND.slug,
+    authHeroTitle: "让脑洞，\n开拍。",
+    authHeroDescription: MIGE_BRAND.description,
     logoUrl: "/logo.svg",
     darkLogoUrl: "/logo.svg",
-    logoFrameEnabled: true,
-    authVideoUrl: "https://boss-shjd.biliapi.net/updream/aniforge/video/video_bbcb00bd-650d-4249-9346-5cd21fd2484c_m1hc-u0-1pu13x-3v1s.mp4",
-    authVideoPosterUrl: "https://i0.hdslb.com/bfs/aitool/aniforge/image/02933f26-5f1b-49ff-a811-b7f95ee5e5b8_m1hc-u0-sau.jpg",
+    logoFrameEnabled: false,
+    authVideoUrl: "",
+    authVideoPosterUrl: "",
     authVideoAutoplay: true,
-    skinId: "classic",
-    activeSkin: DEFAULT_CLASSIC_SKIN,
-    seoTitle: "影策",
-    seoDescription: "影策，面向 AI 影视与短剧创作的工作台。",
-    seoKeywords: "",
-    footerCopyright: `© ${new Date().getFullYear()} 影策. All rights reserved.`,
+    skinId: DEFAULT_MIGE_SKIN.id,
+    activeSkin: DEFAULT_MIGE_SKIN,
+    seoTitle: "米格 MIGE · AI 影像创作工作台",
+    seoDescription: "米格，让脑洞，开拍。用画布组织故事、角色与分镜，完成图片、视频、音频与文本创作。",
+    seoKeywords: "米格,MIGE,AI影像,短剧创作,分镜,自由画布",
+    footerCopyright: `© ${new Date().getFullYear()} 米格 MIGE`,
     icpFilingEnabled: false,
     icpFilingNumber: "",
     redeemPurchaseUrl: "",
@@ -75,12 +76,12 @@ export function normalizePublicAppearance(value?: Partial<PublicAppearance> | nu
         authHeroDescription,
         logoUrl,
         darkLogoUrl,
-        logoFrameEnabled: value?.logoFrameEnabled !== false,
+        logoFrameEnabled: value?.logoFrameEnabled ?? DEFAULT_PUBLIC_APPEARANCE.logoFrameEnabled,
         authVideoUrl: safeAppearanceURL(value?.authVideoUrl, DEFAULT_PUBLIC_APPEARANCE.authVideoUrl),
         authVideoPosterUrl: safeAppearanceURL(value?.authVideoPosterUrl, customVideo ? "" : DEFAULT_PUBLIC_APPEARANCE.authVideoPosterUrl),
         authVideoAutoplay: value?.authVideoAutoplay !== false,
-        skinId: normalizeSkinDefinition(value?.activeSkin).id,
-        activeSkin: normalizeSkinDefinition(value?.activeSkin),
+        skinId: normalizeSkinDefinition(value?.activeSkin, DEFAULT_MIGE_SKIN).id,
+        activeSkin: normalizeSkinDefinition(value?.activeSkin, DEFAULT_MIGE_SKIN),
         seoTitle,
         seoDescription,
         seoKeywords,
@@ -164,7 +165,7 @@ export function appearanceLogoURL(appearance: PublicAppearance, theme: "light" |
 }
 
 export function brandStudioLabel(appearance: PublicAppearance) {
-    if (appearance.brandName === DEFAULT_PUBLIC_APPEARANCE.brandName && appearance.brandSlug === DEFAULT_PUBLIC_APPEARANCE.brandSlug) return "YINGCE STUDIO";
+    if (isMigeBrand(appearance)) return "MIGE / CREATIVE STUDIO";
     return appearance.brandSlug.replace(/-+/g, " ").toLocaleUpperCase();
 }
 

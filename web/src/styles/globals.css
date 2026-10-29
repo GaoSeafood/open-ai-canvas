@@ -426,8 +426,17 @@
 }
 
 .auth-scene-form-pane {
-    background: var(--auth-panel-bg);
+    background: var(--auth-page-bg);
 }
+
+.auth-scene-mascot { position: absolute; top: 16%; left: 12%; width: 76%; height: 48%; object-fit: contain; }
+.auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-overlay { display: none; }
+.auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-title { font-weight: 700; letter-spacing: -.045em; }
+@media (max-width: 1023px) {
+    .auth-scene-mascot { top: auto; bottom: 0; left: auto; right: 2%; width: 42%; height: 74%; }
+    .auth-scene-hero[data-brand-illustrated="true"] .auth-scene-hero-title { max-width: 60%; }
+}
+@media (max-width: 480px) { .auth-scene-mascot { width: 38%; height: 58%; } }
 
 .auth-scene-video-blend {
     background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--auth-panel-bg) 68%, transparent) 58%, var(--auth-panel-bg) 100%);
@@ -15832,8 +15841,8 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 }
 
 .app-user-workspace .app-workspace-brand-mark {
-    width: 28px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
     border-radius: 8px;
     background: transparent;
     box-shadow: none;
@@ -17768,7 +17777,7 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 
 .app-user-workspace .app-workspace-sidebar,
 .app-user-workspace .app-workspace-sidebar-nav {
-    background: #f6f6f7;
+    background: var(--user-surface-muted);
 }
 
 .app-user-workspace .app-workspace-sidebar {
@@ -18470,15 +18479,15 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
    ======================================================================== */
 .app-user-workspace,
 .app-user-overlays {
-    --user-page-bg: #f8f8fa;
-    --user-surface: #ffffff;
-    --user-surface-raised: #ffffff;
-    --user-surface-muted: #f1f1f3;
-    --user-surface-hover: #eaeaec;
-    --user-border: rgba(25, 25, 30, .10);
-    --user-border-strong: rgba(25, 25, 30, .17);
+    --user-page-bg: var(--background);
+    --user-surface: var(--card);
+    --user-surface-raised: var(--surface-card);
+    --user-surface-muted: var(--muted);
+    --user-surface-hover: var(--surface-hover);
+    --user-border: var(--border);
+    --user-border-strong: var(--input);
     /* 文字三级：同一色相（ink）不同透明度。 */
-    --user-ink: #1d1d21;
+    --user-ink: var(--foreground);
     --user-ink-muted: color-mix(in srgb, var(--user-ink) 66%, transparent);
     --user-ink-soft: color-mix(in srgb, var(--user-ink) 52%, transparent);
     --user-accent: var(--workspace-accent);
@@ -18489,7 +18498,7 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
     /* 卡片内媒体与外壳同心：16px 外壳 - 8px 内边距 = 8px。 */
     --user-radius-media: 8px;
     --user-radius-control: 12px;
-    --user-control-pressed: #e1e1e5;
+    --user-control-pressed: var(--surface-active);
     --user-card-hover: color-mix(in srgb, var(--user-surface) 55%, var(--user-surface-muted));
     /* 用户工作台唯一按钮/工具栏控件尺度；antd 侧由 getWorkspaceAntThemeConfig 同步同一组数值。 */
     --user-control-height: 34px;
@@ -18509,15 +18518,15 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 
 .dark .app-user-workspace,
 .dark .app-user-overlays {
-    --user-page-bg: #151517;
-    --user-surface: #1c1c1f;
-    --user-surface-raised: #222226;
-    --user-surface-muted: #26262a;
-    --user-surface-hover: #303036;
-    --user-control-pressed: #3a3a40;
-    --user-border: rgba(255, 255, 255, .09);
-    --user-border-strong: rgba(255, 255, 255, .16);
-    --user-ink: #f3f3f5;
+    --user-page-bg: var(--background);
+    --user-surface: var(--card);
+    --user-surface-raised: var(--surface-card);
+    --user-surface-muted: var(--muted);
+    --user-surface-hover: var(--surface-hover);
+    --user-control-pressed: var(--surface-active);
+    --user-border: var(--border);
+    --user-border-strong: var(--input);
+    --user-ink: var(--foreground);
     --user-ink-muted: color-mix(in srgb, var(--user-ink) 72%, transparent);
     --user-ink-soft: color-mix(in srgb, var(--user-ink) 56%, transparent);
     --user-shadow-card: none;
@@ -18534,7 +18543,7 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 .app-user-workspace .app-workspace-sidebar {
     width: var(--workspace-reference-sidebar) !important;
     flex-basis: var(--workspace-reference-sidebar) !important;
-    background: var(--user-page-bg) !important;
+    background: var(--user-surface-muted) !important;
     border-right: 0 !important;
     transition: none;
 }
@@ -18556,7 +18565,7 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 .app-user-workspace .app-workspace-nav-link .app-workspace-nav-main { gap: 8px !important; }
 .app-user-workspace .app-workspace-nav-link .app-workspace-nav-icon svg,
 .app-user-workspace .app-workspace-nav-link .app-workspace-nav-main > svg { width: 16px !important; height: 16px !important; }
-.app-user-workspace .app-workspace-nav-link.is-active { background: transparent !important; color: var(--user-ink) !important; font-weight: 500 !important; }
+.app-user-workspace .app-workspace-nav-link.is-active { background: var(--control-selected-bg) !important; color: var(--control-selected-fg) !important; font-weight: 600 !important; }
 .app-user-workspace .app-workspace-nav-link:hover:not(.is-active),
 .app-user-workspace .app-workspace-nav-link:focus-visible:not(.is-active) { background: var(--user-surface-hover) !important; color: var(--user-ink) !important; }
 .app-user-workspace .app-workspace-nav-group-toggle { color: var(--user-ink-soft) !important; }

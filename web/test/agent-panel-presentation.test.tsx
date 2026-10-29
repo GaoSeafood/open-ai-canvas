@@ -10,7 +10,7 @@ const noop = () => {};
 
 test("welcome uses the independent assistant name and escapes it as text", () => {
     const html = renderToStaticMarkup(<AgentWelcome appearance={{ ...DEFAULT_CANVAS_APPEARANCE, agentName: "我的<工作室>" }} nodeCount={2} onChooseSkill={noop} onDraftPrompt={noop} />);
-    expect(html).toContain("在这里，和我的&lt;工作室&gt;让灵感，慢慢成形");
+    expect(html).toContain("和我的&lt;工作室&gt;一起，让脑洞开拍");
     expect(html).toContain("2 个节点");
     expect(html.match(/type="button"/g)).toHaveLength(3);
     expect(html).not.toContain('disabled=""');

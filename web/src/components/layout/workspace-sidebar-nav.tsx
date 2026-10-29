@@ -137,7 +137,7 @@ function WorkspaceSwitcher({ collapsed, onNavigate }: { collapsed: boolean; onNa
                 <Link to="/" onClick={onNavigate} className="app-workspace-sidebar-brand-button group" aria-label={`${appearance.brandName}首页`}>
                     <BrandLogoFrame
                         className="app-workspace-brand-mark grid size-8 shrink-0 place-items-center rounded-[var(--r-sm)] shadow-sm"
-                        logoClassName="size-5 object-contain"
+                        logoClassName="size-9 object-contain"
                         alt=""
                         fallback={<InfinityIcon className="size-4" strokeWidth={2.2} />}
                     />
@@ -152,7 +152,7 @@ function WorkspaceSwitcher({ collapsed, onNavigate }: { collapsed: boolean; onNa
                 <span className="flex min-w-0 items-center gap-2">
                     <BrandLogoFrame
                         className="app-workspace-brand-mark grid size-8 shrink-0 place-items-center rounded-[var(--r-sm)] shadow-sm"
-                        logoClassName="size-5 object-contain"
+                        logoClassName="size-9 object-contain"
                         alt=""
                         fallback={<InfinityIcon className="size-4" strokeWidth={2.2} />}
                     />

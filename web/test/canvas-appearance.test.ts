@@ -149,7 +149,7 @@ describe("canvas appearance persistence and presets", () => {
     test("editing a fixed legacy appearance starts from what is visible", () => {
         const legacy = canvasAppearanceForTheme("light", custom);
         const values = canvasAppearanceValues(legacy, "dark");
-        expect(values.backgroundColor).toBe("#F0F0F0");
+        expect(values.backgroundColor).toBe("#F8F4EB");
         expect(values.gridOpacity).toBe(80);
         expect(updateCustomCanvasAppearance(legacy, { gridOpacity: 22 }, "dark").custom).toEqual({ ...values, gridOpacity: 22 });
     });
