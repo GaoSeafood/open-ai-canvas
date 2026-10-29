@@ -92,6 +92,7 @@ import { useAssetStore, type ModelAsset } from "@/stores/use-asset-store";
 import { usePrevisWorkbenchStore } from "@/stores/canvas/use-previs-workbench-store";
 import { PREVIS_MODES, previsModeCapabilities } from "@/lib/canvas/previs/previs-modes";
 import { useActiveTheme } from "@/stores/canvas/use-canvas-theme-store";
+import { useAppearanceStore } from "@/stores/use-appearance-store";
 import type { CanvasNodeData } from "@/types/canvas";
 import type { PrevisCameraMove, PrevisRenderMode, PrevisScene, PrevisSceneOutput, PrevisTransform, PrevisVec3 } from "@/types/previs";
 export { cameraMoveOptions, poseOptions, shotSizeOptions } from "./previs-inspectors";
@@ -121,6 +122,7 @@ export function CanvasPrevisWorkbench({
 }) {
     const { message, modal } = App.useApp();
     const theme = canvasThemes[useActiveTheme()];
+    const brandName = useAppearanceStore((state) => state.appearance.brandName);
     const effectiveCanvasId = useMemo(() => {
         const explicit = canvasId?.trim();
         if (explicit) return explicit;
@@ -1303,7 +1305,7 @@ export function CanvasPrevisWorkbench({
         "--pd-a-bg": theme.accent.primarySoft,
         "--pd-a-bd": theme.node.activeStroke,
         "--pd-a-on": theme.accent.onPrimary,
-        "--pd-accent-rgb": theme.accent.primary === "#171717" || theme.accent.primary === "#f5f5f5" ? "255 255 255" : "79 140 255",
+        "--pd-accent-rgb": [1, 3, 5].map((offset) => Number.parseInt(theme.accent.primary.slice(offset, offset + 2), 16)).join(" "),
         "--previs-accent": theme.accent.primary,
         "--pd-a-on-theme": theme.accent.onPrimary,
         "--pd-a-bg-theme": theme.accent.primarySoft,
@@ -1317,7 +1319,7 @@ export function CanvasPrevisWorkbench({
                     <X className="size-4" />
                 </button>
                 <div className="previs-desk-brand">
-                    <span className="previs-desk-logo">影策</span>
+                    <span className="previs-desk-logo">{brandName}</span>
                     <span className="previs-desk-brand-title">预演台</span>
                     <span className="previs-desk-brand-sub">AI 短剧预演</span>
                 </div>

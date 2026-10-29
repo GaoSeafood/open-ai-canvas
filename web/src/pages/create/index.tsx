@@ -23,6 +23,7 @@ import { useCreationPreferencesStore } from "@/stores/use-creation-preferences-s
 import { useAssetStore, type Asset } from "@/stores/use-asset-store";
 import { loadAssetsForUse, saveRemoteUserDataNow } from "@/services/user-data-sync";
 import { useAppearanceStore } from "@/stores/use-appearance-store";
+import { BrandMascot } from "@/components/brand/brand-mascot";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/use-user-store";
 import type { PromptOptimizerProvider } from "@/lib/plugins/plugin-types";
@@ -1097,10 +1098,14 @@ export default function CreatePage() {
                 <section ref={launchpadRef} className="creation-launchpad" aria-label="开始创作">
                     <header className="creation-start-heading">
                         <div>
-                            <h1>和{brandName}聊聊创作想法</h1>
+                            <p className="creation-brand-eyebrow">{brandName} / CREATIVE STUDIO</p>
+                            <h1>今天，拍点什么？</h1>
                             <p>从一个画面、一个角色或一句话开始。</p>
                         </div>
-                        <button type="button" className="creation-history-entry" aria-label="查看历史对话" aria-expanded={historyOpen} onClick={() => setHistoryOpen(true)}><History aria-hidden="true" /><span>历史对话</span></button>
+                        <div className="creation-start-aside">
+                            <BrandMascot className="creation-brand-mascot" />
+                            <button type="button" className="creation-history-entry" aria-label="查看历史对话" aria-expanded={historyOpen} onClick={() => setHistoryOpen(true)}><History aria-hidden="true" /><span>历史对话</span></button>
+                        </div>
                     </header>
                     <div className={cn("creation-composer-stage is-home-mode", agentMode && "is-agent-mode")}>
                         <CreationModeTabs mode={mode} agentActive={agentMode} onAgentSelect={() => setAgentMode(true)} onModeChange={(next) => { setAgentMode(false); selectMode(next); }} />

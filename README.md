@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="web/public/logo.svg" width="88" alt="影策 logo">
+  <img src="web/public/logo.svg" width="88" alt="米格 logo">
 </p>
 
-<h1 align="center">影策</h1>
+<h1 align="center">米格 MIGE</h1>
 
-<p align="center">让一个故事，从文字走向银幕</p>
+<p align="center">让脑洞，开拍。</p>
 
 <p align="center">
   <a href="https://github.com/ddcat-ai/open-ai-canvas">GitHub</a> ·
@@ -13,7 +13,7 @@
   <a href="SECURITY.md">安全策略</a>
 </p>
 
-影策是一个开源的 AI 影视与短剧创作工作台：用自由画布组织创作，用结构化工作流管理剧本、角色、场景和分镜，并通过统一的任务系统完成图片、视频、音频与文本生成。
+米格是基于开源影策构建的 AI 影视与短剧创作工作台：用自由画布组织创作，用结构化工作流管理剧本、角色、场景和分镜，并通过统一的任务系统完成图片、视频、音频与文本生成。品牌与界面规范见[米格品牌](docs/content/docs/overview/mige-brand.mdx)。
 
 > 项目仍在快速开发，数据结构和外部接口可能调整。默认适合个人、本地或可信环境部署；未经安全配置，不要直接作为公网多人服务使用。
 

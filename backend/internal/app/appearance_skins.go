@@ -191,7 +191,38 @@ func defaultAppearanceSkinThemes() []AppearanceSkinTheme {
 	studio.Tokens.Buttons = defaultAppearanceSkinButtons(false)
 	warm.Tokens.Buttons = defaultAppearanceSkinButtons(false)
 	violet.Tokens.Buttons = defaultAppearanceSkinButtons(false)
-	return []AppearanceSkinTheme{classic, studio, warm, violet}
+	return []AppearanceSkinTheme{classic, defaultMigeAppearanceSkin(), studio, warm, violet}
+}
+
+func defaultMigeAppearanceSkin() AppearanceSkinTheme {
+	skin := cloneAppearanceSkin(defaultClassicAppearanceSkin(), "mige-studio", "米格片场", "赤陶橙与米白 · 中性炭黑画布")
+	skin.Tokens.Light = tintAppearanceSkinMode(skin.Tokens.Light, appearanceSkinPalette{
+		canvas: "#f8f4eb", surface: "#fffdfa", subtle: "#f2ede3", raised: "#e9e1d5", overlay: "#fffdfa", text: "#252522", muted: "#706b62", border: "#ddd7cd",
+		primary: "#a94727", primaryHover: "#923b20", primaryActive: "#79311b", primaryForeground: "#ffffff", selected: "#f5e1d6", selectedHover: "#eed3c4", selectedActive: "#e6c2af", selectedForeground: "#8b3b22", info: "#2563eb",
+		switchChecked: "#16a34a", switchCheckedHover: "#15803d", switchCheckedHandle: "#ffffff", switchUnchecked: "#b8b8b8", switchUncheckedHover: "#9f9f9f", switchUncheckedHandle: "#ffffff",
+		success: "#16a34a", warning: "#d97706", danger: "#dc2626", dangerHover: "#b91c1c", dangerActive: "#991b1b", dangerForeground: "#ffffff",
+		workspace: "#fffdfa", grid: "#e8e2d8", adminBackground: "#f8f4eb", adminSurface: "#fffdfa", adminSubtle: "#f2ede3", adminStrong: "#e9e1d5", authBackground: "#f8f4eb", authPanel: "#f2ede3", authCard: "#fffdfa", authAccent: "#a94727", authMuted: "#706b62",
+	})
+	skin.Tokens.Dark = tintAppearanceSkinMode(skin.Tokens.Dark, appearanceSkinPalette{
+		canvas: "#1e201f", surface: "#252725", subtle: "#2c2e2b", raised: "#363832", overlay: "#2a2c29", text: "#f8f4eb", muted: "#b7b3a9", border: "#41433e",
+		primary: "#e9a385", primaryHover: "#f3b89e", primaryActive: "#d98d6e", primaryForeground: "#302016", selected: "#44352e", selectedHover: "#534036", selectedActive: "#634a3b", selectedForeground: "#f4c4ad", info: "#60a5fa",
+		switchChecked: "#22c55e", switchCheckedHover: "#4ade80", switchCheckedHandle: "#071a0f", switchUnchecked: "#525252", switchUncheckedHover: "#686868", switchUncheckedHandle: "#f5f5f5",
+		success: "#4ade80", warning: "#fbbf24", danger: "#f87171", dangerHover: "#fca5a5", dangerActive: "#ef4444", dangerForeground: "#2b0808",
+		workspace: "#252725", grid: "#343631", adminBackground: "#1e201f", adminSurface: "#252725", adminSubtle: "#2c2e2b", adminStrong: "#363832", authBackground: "#1e201f", authPanel: "#252725", authCard: "#2c2e2b", authAccent: "#e9a385", authMuted: "#b7b3a9",
+	})
+	skin.Tokens.Light.ControlBorder, skin.Tokens.Light.ControlFocus = "#c8beb0", "#a94727"
+	skin.Tokens.Light.ControlHover, skin.Tokens.Light.ControlActive = "#f0e9dd", "#e7ddce"
+	skin.Tokens.Light.ControlDisabledBackground, skin.Tokens.Light.ControlDisabledForeground = "#eee9df", "#8b8275"
+	skin.Tokens.Light.Icon, skin.Tokens.Light.IconMuted, skin.Tokens.Light.IconActive = "#514c44", "#82796d", "#a94727"
+	skin.Tokens.Dark.ControlBorder, skin.Tokens.Dark.ControlFocus = "#5e6056", "#e9a385"
+	skin.Tokens.Dark.Control = "#2c2e2b"
+	skin.Tokens.Dark.ControlHover, skin.Tokens.Dark.ControlActive = "#363832", "#41433c"
+	skin.Tokens.Dark.ControlDisabledBackground, skin.Tokens.Dark.ControlDisabledForeground = "#30322e", "#8b8c81"
+	skin.Tokens.Dark.Icon, skin.Tokens.Dark.IconMuted, skin.Tokens.Dark.IconActive = "#ded9ce", "#a4a295", "#e9a385"
+	skin.Tokens.Components = appearanceSkinComponentPreset(10, 10, 16, 16, 10, 4)
+	skin.Tokens.Components.ControlHeight, skin.Tokens.Components.ControlHeightLarge = 40, 46
+	skin.Tokens.Buttons = defaultAppearanceSkinButtons(false)
+	return skin
 }
 
 func defaultClassicAppearanceSkin() AppearanceSkinTheme {
@@ -266,7 +297,7 @@ func normalizeAppearanceSkinThemes(themes []AppearanceSkinTheme) []AppearanceSki
 	replacedClassic := false
 	for index := range result {
 		result[index].ID = strings.ToLower(strings.TrimSpace(result[index].ID))
-		if result[index].ID == defaultAppearanceSkinID {
+		if result[index].ID == "classic" {
 			// The system default is not editable. Whatever was submitted is
 			// discarded so a drifted client copy cannot reject the whole save.
 			result[index] = classic

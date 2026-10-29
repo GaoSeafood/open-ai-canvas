@@ -5,6 +5,7 @@
 
 import type { CanvasTheme } from "@/lib/canvas-theme";
 import { useAppearanceStore } from "@/stores/use-appearance-store";
+import { isMigeBrand } from "@/lib/brand";
 import { agentAvatarClipForState, agentAvatarStateForRunStatus, agentCopy, DEFAULT_CANVAS_APPEARANCE, isAgentAvatarBundleManifest, type AgentAvatarBundleManifest } from "@/lib/canvas/agent-appearance";
 import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePopoverAnchorAlign } from "@/hooks/use-popover-anchor-align";
@@ -59,12 +60,14 @@ export function AgentLauncher({
     const appearance = useAppearanceStore((state) => state.appearance.canvas) || DEFAULT_CANVAS_APPEARANCE;
     const appearanceResolved = useAppearanceStore((state) => state.resolved);
     const appearanceRevision = useAppearanceStore((state) => state.appearance.revision);
+    const mige = useAppearanceStore((state) => isMigeBrand(state.appearance));
+    const brandedAvatar = mige && appearance.avatarType === "bundle" && !appearance.avatarBundleResourceId;
     const live = appearance.avatarType === "live2d" && Boolean(appearance.live2dResourceId && appearance.live2dEntry);
     const avatarState = agentAvatarStateForRunStatus(status);
     const bundleManifestURL = appearance.avatarBundleResourceId ? agentAvatarBundleFileURL(appearance.avatarBundleResourceId, "avatar.json", false, appearanceRevision) : "/doll/avatar.json";
     const [bundleManifestState, setBundleManifestState] = useState<{ url: string; manifest: AgentAvatarBundleManifest | null } | null>(null);
     useEffect(() => {
-        if (appearance.avatarType !== "bundle") {
+        if (appearance.avatarType !== "bundle" || brandedAvatar) {
             setBundleManifestState(null);
             return;
         }
@@ -81,10 +84,10 @@ export function AgentLauncher({
             }
         })();
         return () => controller.abort();
-    }, [appearance.avatarType, bundleManifestURL]);
+    }, [appearance.avatarType, bundleManifestURL, brandedAvatar]);
     const currentBundleManifestState = bundleManifestState?.url === bundleManifestURL ? bundleManifestState : null;
     const bundleManifest = currentBundleManifestState?.manifest ?? null;
-    const bundleManifestLoading = appearance.avatarType === "bundle" && currentBundleManifestState === null;
+    const bundleManifestLoading = !brandedAvatar && appearance.avatarType === "bundle" && currentBundleManifestState === null;
     const clip = bundleManifest ? agentAvatarClipForState(appearance, avatarState, bundleManifest) : "";
     const clipFile = bundleManifest?.clips[clip] || "";
     const mediaURL = appearance.avatarType === "bundle" && clipFile ? (appearance.avatarBundleResourceId ? agentAvatarBundleFileURL(appearance.avatarBundleResourceId, clipFile, false, appearanceRevision) : `/doll/${encodeURIComponent(clipFile)}`) : "";
@@ -140,7 +143,9 @@ export function AgentLauncher({
                 whileTap={reducedMotion || dragging ? undefined : { scale: 0.96 }}
                 transition={{ duration: reducedMotion ? 0 : 0.18 }}
             >
-                {collapsed ? (
+                {brandedAvatar && appearanceResolved ? (
+                    <img src="/logo.svg" alt="" width={collapsed ? 30 : 48} height={collapsed ? 30 : 48} draggable={false} />
+                ) : collapsed ? (
                     <FluidOrb size={30} color="#7164f6" />
                 ) : live ? (
                     <Live2DAvatar
