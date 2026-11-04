@@ -39,7 +39,7 @@ type canvasGenerationInput struct {
 }
 
 type canvasTextOptions struct {
-	Stream   *bool `json:"stream"`
+	Stream         *bool  `json:"stream"`
 	Thinking       bool   `json:"thinking"`
 	ThinkingEffort string `json:"thinkingEffort"`
 	// MaxOutputTokens 是本次调用的输出上限（思考 + 正文 + 工具参数）。
