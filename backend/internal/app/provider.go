@@ -39,7 +39,7 @@ type canvasGenerationInput struct {
 }
 
 type canvasTextOptions struct {
-	Stream         *bool  `json:"stream"`
+	Stream   *bool `json:"stream"`
 	Thinking       bool   `json:"thinking"`
 	ThinkingEffort string `json:"thinkingEffort"`
 	// MaxOutputTokens 是本次调用的输出上限（思考 + 正文 + 工具参数）。
@@ -263,7 +263,16 @@ func (s *Service) processCanvasGenerationTask(ctx context.Context, userID string
 			}
 			return runAgentToolTask(ctx, input)
 		}
-		result, taskErr := runTextTask(ctx, input)
+		var result map[string]interface{}
+		var taskErr error
+		if draft, ok := ecommercePlanningBatchable(input); ok {
+			result, taskErr = runEcommercePlanningBatches(ctx, input, draft)
+		} else {
+			result, taskErr = runTextTask(ctx, input)
+		}
+		if taskErr == nil {
+			taskErr = s.validateEcommerceWorkbenchResult(userID, input, result)
+		}
 		if taskErr == nil && promptTemplateOperation != "" {
 			taskErr = validatePromptTemplateResult(promptTemplateOperation, result)
 		}
